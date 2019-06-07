@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        lblSignIn.setOnClickListener {
+            val signInIntent = Intent(this, SignInActivity::class.java)
+            startActivity(signInIntent)
+        }
 
     }
 }

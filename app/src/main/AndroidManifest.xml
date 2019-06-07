@@ -12,6 +12,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme.SinBarra">
+        <activity android:name=".activities.SignInAdditionalActivity">
+        </activity>
+        <activity android:name=".activities.SignInActivity">
+        </activity>
         <activity android:name=".activities.ScheduleActivity">
         </activity>
 
