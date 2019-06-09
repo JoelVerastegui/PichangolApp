@@ -1,6 +1,7 @@
 package com.example.joel.pichangol.activities
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
@@ -17,10 +18,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.activity_principal.*
 
 class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationListener, GoogleMap.OnCameraMoveListener {
 
@@ -31,6 +30,7 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
     // GoogleMap Variables
     var mMap : GoogleMap? = null
+    var markers = ArrayList<Marker?>()
 
     // GPS Variables
     var locationManager : LocationManager? = null
@@ -40,6 +40,17 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
+
+        lblViewLocal.setOnClickListener {
+            val localName = lblName.text
+            val localAddress = lblAddress.text
+
+            var localIntent = Intent(this, LocalActivity::class.java)
+            localIntent.putExtra("localName", localName)
+            localIntent.putExtra("localAddress", localAddress)
+            startActivity(localIntent)
+        }
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             validateAccessLocation()
@@ -94,19 +105,31 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         mMap?.clear()
 
 
-        var marker = MarkerOptions()
-
-        mMap?.addMarker(MarkerOptions()
+        val marker1 : Marker? = mMap?.addMarker(MarkerOptions()
             .position(LatLng(-12.122294, -77.028323))
-            .title("Local de Doña Cecilia").visible(true))?.showInfoWindow()
+            .title("Local de Doña Cecilia").visible(true)
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
 
-        mMap?.addMarker(MarkerOptions()
+        marker1?.tag = "1"
+        markers.add(marker1)
+
+
+        val marker2 : Marker? = mMap?.addMarker(MarkerOptions()
             .position(LatLng(-12.120545, -77.027553))
-            .title("Local de Miguel Castro").visible(true))?.showInfoWindow()
+            .title("Local de Miguel Castro").visible(true)
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
 
-        mMap?.addMarker(MarkerOptions()
+        marker2?.tag = "2"
+        markers.add(marker2)
+
+
+        val marker3 : Marker? = mMap?.addMarker(MarkerOptions()
             .position(LatLng(-12.121637, -77.027582))
-            .title("Local de Fausto Arevalo").visible(true))?.showInfoWindow()
+            .title("Local de Fausto Arevalo").visible(true)
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
+
+        marker3?.tag = "3"
+        markers.add(marker3)
 
         mMap?.setOnMarkerClickListener(this)
 
@@ -140,7 +163,11 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         try{
             locationManager = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
 
-            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, this)
+            val gps_enabled = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+            if(gps_enabled){
+                locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, this)
+            }
         } catch(se : SecurityException) {
             Toast.makeText(this,"Error al mostrar ubicacion actual",Toast.LENGTH_LONG).show()
         }
@@ -150,11 +177,42 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
     override fun onMarkerClick(p0: Marker?): Boolean {
         val markerTitle = p0?.title
 
-        Toast.makeText(this,markerTitle,Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this,markerTitle,Toast.LENGTH_SHORT).show()
 
+        val address = when(p0?.tag){
+            "1" -> "Direccion 1"
+            "2" -> "Direccion 2"
+            "3" -> "Direccion 3"
+            else -> "Ninguno"
+        }
+
+        // Setting data
+        lblName.text = markerTitle
+        lblAddress.text = address
+
+        // localInfo Animation
+        ObjectAnimator.ofFloat(lblLocalInfo,"translationY", 0f).apply {
+            duration = 200
+            start()
+        }
+        ObjectAnimator.ofFloat(lblName,"translationY", 0f).apply {
+            duration = 200
+            start()
+        }
+        ObjectAnimator.ofFloat(lblAddress,"translationY", 0f).apply {
+            duration = 200
+            start()
+        }
+        ObjectAnimator.ofFloat(lblViewLocal,"translationY", 0f).apply {
+            duration = 200
+            start()
+        }
+
+        /*
         var localIntent = Intent(this, LocalActivity::class.java)
         localIntent.putExtra("localTitle", markerTitle)
         startActivity(localIntent)
+        */
 
         return true
     }

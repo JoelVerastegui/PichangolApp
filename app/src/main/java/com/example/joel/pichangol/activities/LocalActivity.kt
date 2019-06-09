@@ -18,6 +18,11 @@ class LocalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_local)
 
+        val extras = intent?.extras
+
+        lblName.text = extras?.get("localName") as? String ?: ""
+        lblAddress.text = extras?.get("localAddress") as? String ?: ""
+
         rvReview.layoutManager = LinearLayoutManager(this)
 
         loadReviews()

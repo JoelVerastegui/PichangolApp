@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.SignInAdditionalActivity" android:background="#F18D06">
+        tools:context=".activities.SignInAdditionalActivity">
 
     <TextView
             android:layout_width="0dp"
@@ -21,43 +21,44 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/txtPhone"
-            android:background="#FFFFFF" android:padding="10dp" android:layout_marginStart="8dp"
+            android:padding="10dp" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:hint="Telefono 1"
             android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/textView8"
-    />
+            android:gravity="center"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/txtPhone4"
-            android:background="#FFFFFF" android:padding="10dp" android:layout_marginStart="8dp"
+            android:id="@+id/txtPhone2"
+            android:padding="10dp" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:hint="Telefono 2"
             android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/txtPhone"
-    />
+            android:gravity="center"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/txtPhone5"
-            android:background="#FFFFFF" android:padding="10dp" android:layout_marginStart="8dp"
+            android:id="@+id/txtPhone3"
+            android:padding="10dp" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:hint="Telefono 3"
-            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/txtPhone4"/>
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/txtPhone2"
+            android:gravity="center"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/txtDni2"
-            android:background="#FFFFFF" android:padding="10dp" android:layout_marginStart="8dp"
+            android:id="@+id/txtDni"
+            android:padding="10dp" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:hint="DNI"
-            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/txtPhone5"
-    />
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/txtPhone3"
+            android:gravity="center"/>
     <Button
             android:text="Continuar"
             android:layout_width="0dp"

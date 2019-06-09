@@ -1,5 +1,6 @@
 package com.example.joel.pichangol.activities
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ObjectAnimator.ofFloat(btnLogin,"translationY", 50f).apply {
+            duration = 2000
+            start()
+        }
 
         btnLogin.setOnClickListener {
             val email = txtEmail.text.toString()
