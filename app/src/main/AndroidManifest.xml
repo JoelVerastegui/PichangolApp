@@ -32,7 +32,8 @@
         </activity>
         <activity android:name=".activities.PrincipalActivity">
         </activity>
-        <activity android:name=".activities.LocalActivity">
+        <activity android:name=".activities.LocalActivity"
+                  android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.SinBarra" parent="Theme.AppCompat.DayNight.NoActionBar" />
+    <style name="AppTheme.SinBarra" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/fade</item>
+        <item name="android:windowExitTransition">@transition/fade</item>
+    </style>
 
 </resources>

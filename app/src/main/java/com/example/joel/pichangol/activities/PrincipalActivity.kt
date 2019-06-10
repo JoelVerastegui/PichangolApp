@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -12,8 +13,17 @@ import android.location.LocationManager
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
 import com.example.joel.pichangol.R
+import com.example.joel.pichangol.Server
+import com.example.joel.pichangol.models.Local
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,6 +33,8 @@ import kotlinx.android.synthetic.main.activity_principal.*
 
 class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationListener, GoogleMap.OnCameraMoveListener {
 
+    // Activity variables
+    var selectedLocal : Local? = null
 
     // Location Permission Variables
     var accessGranted = false
@@ -30,24 +42,37 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
     // GoogleMap Variables
     var mMap : GoogleMap? = null
-    var markers = ArrayList<Marker?>()
 
     // GPS Variables
     var locationManager : LocationManager? = null
     var LOCATION_REFRESH_TIME = 10000L
     var LOCATION_REFRESH_DISTANCE = 10f
 
+    // Volley Variables
+    var requestQueue : RequestQueue? = null
+    var locals = ArrayList<Local>()
+
+    // Server variables
+    var serverIP = Server.instance.ip
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
+
+        //set loading gif to front
+        imgLoading.visibility = View.VISIBLE
+        imgLoading.bringToFront()
 
         lblViewLocal.setOnClickListener {
             val localName = lblName.text
             val localAddress = lblAddress.text
 
             var localIntent = Intent(this, LocalActivity::class.java)
-            localIntent.putExtra("localName", localName)
-            localIntent.putExtra("localAddress", localAddress)
+            localIntent.putExtra("localId", selectedLocal?.id)
+            localIntent.putExtra("localName", selectedLocal?.name)
+            localIntent.putExtra("localAddress", selectedLocal?.address)
+            localIntent.putExtra("localDescription", selectedLocal?.description)
             startActivity(localIntent)
         }
 
@@ -104,32 +129,8 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
         mMap?.clear()
 
-
-        val marker1 : Marker? = mMap?.addMarker(MarkerOptions()
-            .position(LatLng(-12.122294, -77.028323))
-            .title("Local de Doña Cecilia").visible(true)
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
-
-        marker1?.tag = "1"
-        markers.add(marker1)
-
-
-        val marker2 : Marker? = mMap?.addMarker(MarkerOptions()
-            .position(LatLng(-12.120545, -77.027553))
-            .title("Local de Miguel Castro").visible(true)
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
-
-        marker2?.tag = "2"
-        markers.add(marker2)
-
-
-        val marker3 : Marker? = mMap?.addMarker(MarkerOptions()
-            .position(LatLng(-12.121637, -77.027582))
-            .title("Local de Fausto Arevalo").visible(true)
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
-
-        marker3?.tag = "3"
-        markers.add(marker3)
+        // Run local get request
+        localGetRequest()
 
         mMap?.setOnMarkerClickListener(this)
 
@@ -175,20 +176,12 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
     // Marker Click Event
     override fun onMarkerClick(p0: Marker?): Boolean {
-        val markerTitle = p0?.title
 
-        //Toast.makeText(this,markerTitle,Toast.LENGTH_SHORT).show()
-
-        val address = when(p0?.tag){
-            "1" -> "Direccion 1"
-            "2" -> "Direccion 2"
-            "3" -> "Direccion 3"
-            else -> "Ninguno"
-        }
+        selectedLocal = locals.find { l -> l.id == p0?.tag }
 
         // Setting data
-        lblName.text = markerTitle
-        lblAddress.text = address
+        lblName.text = selectedLocal?.name
+        lblAddress.text = selectedLocal?.address
 
         // localInfo Animation
         ObjectAnimator.ofFloat(lblLocalInfo,"translationY", 0f).apply {
@@ -208,12 +201,6 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
             start()
         }
 
-        /*
-        var localIntent = Intent(this, LocalActivity::class.java)
-        localIntent.putExtra("localTitle", markerTitle)
-        startActivity(localIntent)
-        */
-
         return true
     }
 
@@ -232,7 +219,6 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         Toast.makeText(this,"Distance: $distance",Toast.LENGTH_SHORT).show()
     }
 
-
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -243,6 +229,54 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
     override fun onProviderDisabled(provider: String?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    // Local get Request
+    fun localGetRequest(){
+
+        requestQueue = Volley.newRequestQueue(this)
+
+        var request = JsonArrayRequest(
+            Request.Method.GET,
+            "http://$serverIP:8080/api-rest/get/obtenerdatoslocal",
+            null,
+            Response.Listener { response ->
+                var localList = ArrayList<Local>()
+
+                for(i in 0 until response.length()){
+                    val localJson = response.getJSONObject(i)
+
+                    locals.add(Local(
+                        localJson["id"] as? Int ?: 0,
+                   localJson.getJSONObject("admin")["id"] as? Int ?: 0,
+                        localJson["name"] as? String ?: "",
+                        localJson["address"] as? String ?: "",
+                        localJson["description"] as? String ?: "",
+                        localJson["latitude"] as? Double ?: 0.0,
+                        localJson["longitude"] as? Double ?: 0.0,
+                        localJson["status"] as? String ?: ""
+                    ))
+
+                }
+
+                for (local in locals){
+                    val marker : Marker? = mMap?.addMarker(MarkerOptions()
+                        .position(LatLng(local.latitude, local.longitude))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ball_icon)))
+
+                    marker?.tag = local.id
+                }
+
+                imgLoading.visibility = View.GONE
+
+            },
+            Response.ErrorListener { Toast.makeText(this,"El servicio no se encuentra",Toast.LENGTH_LONG).show() }
+        )
+
+        request.retryPolicy = DefaultRetryPolicy(0,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+
+        requestQueue?.add(request)
+
     }
 
 }
