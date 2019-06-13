@@ -14,16 +14,28 @@ import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.joel.pichangol.R
 import com.example.joel.pichangol.Server
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
     // Init Activity Variables
     var isConfiguration = false
     var store : SharedPreferences? = null
+
+    // Volley variables
+    var requestQueue : RequestQueue? = null
+
+    // Server variables
+    var serverIP = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         if(store?.getString("serverIP","") != ""){
 
-            val serverIP = store?.getString("serverIP","") as String
+            serverIP = store?.getString("serverIP","") as String
 
             val ip = serverIP.split(".")
 
@@ -43,6 +55,8 @@ class MainActivity : AppCompatActivity() {
             lblIP3.setText(ip[2])
             lblIP4.setText(ip[3])
 
+        } else{
+            saveServerIP()
         }
 
 
@@ -85,12 +99,15 @@ class MainActivity : AppCompatActivity() {
             val email = txtEmail.text.toString()
             val password = txtPassword.text.toString()
 
+            loginPostRequest(email,password)
+
+            /*
             if(email == "beleza" && password == "beleza"){
                 val miIntent = Intent(this, PrincipalActivity::class.java)
                 startActivity(miIntent)
             } else{
                 Toast.makeText(this,"Credenciales incorrectas",Toast.LENGTH_LONG).show()
-            }
+            }*/
         }
 
         lblSignIn.setOnClickListener {
@@ -151,10 +168,63 @@ class MainActivity : AppCompatActivity() {
         store?.edit()?.putString("serverIP", "$ip1.$ip2.$ip3.$ip4")?.commit()
 
         Server.instance.ip = "$ip1.$ip2.$ip3.$ip4"
+
+        serverIP = Server.instance.ip
     }
 
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    fun loginPostRequest(email : String, password : String){
+        requestQueue = Volley.newRequestQueue(this)
+
+        val request = object : JsonObjectRequest(
+            Request.Method.POST,
+            "http://$serverIP:8080/api-rest/post/login",
+            null,
+            Response.Listener { response ->
+
+                if(response["response"] == "true"){
+                    val miIntent = Intent(this, PrincipalActivity::class.java)
+                    startActivity(miIntent)
+                } else if(response["response"] == "false"){
+                    Toast.makeText(this,"Credenciales incorrectas.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(this,"No se reconoce el response.",Toast.LENGTH_SHORT).show()
+                }
+
+            },
+            Response.ErrorListener {
+                Toast.makeText(this,"Probablemente, el servicio es incorrecto. Error: $it",Toast.LENGTH_SHORT).show()
+            }
+        ) {
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+
+            override fun getParams(): MutableMap<String, String> {
+                val params = HashMap<String,String>()
+
+                params.put("email",email)
+                params.put("password",password)
+
+                return params
+            }
+
+            override fun getBody(): ByteArray {
+                val params = HashMap<String,String>()
+
+                params.put("email",email)
+                params.put("password",password)
+
+                return JSONObject(params).toString().toByteArray()
+            }
+        }
+
+        request.retryPolicy = DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+
+        requestQueue?.add(request)
     }
 }
