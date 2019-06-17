@@ -105,7 +105,10 @@ class LocalActivity : AppCompatActivity() {
                 }
 
             },
-            Response.ErrorListener {  }
+            Response.ErrorListener {
+                imgLoading.visibility = View.GONE
+                Toast.makeText(this,"Probablemente, el servicio es incorrecto. Error: $it", Toast.LENGTH_LONG).show()
+            }
         )
 
         request.retryPolicy = DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)

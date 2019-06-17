@@ -220,7 +220,7 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this,"Se cambio la ubicacion",Toast.LENGTH_SHORT).show()
     }
 
     override fun onProviderEnabled(provider: String?) {
@@ -270,7 +270,10 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
                 imgLoading.visibility = View.GONE
 
             },
-            Response.ErrorListener { Toast.makeText(this,"El servicio no se encuentra",Toast.LENGTH_LONG).show() }
+            Response.ErrorListener {
+                imgLoading.visibility = View.GONE
+                Toast.makeText(this,"Probablemente, el servicio es incorrecto. Error: $it", Toast.LENGTH_LONG).show()
+            }
         )
 
         request.retryPolicy = DefaultRetryPolicy(0,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)

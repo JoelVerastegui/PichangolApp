@@ -22,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.joel.pichangol.R
 import com.example.joel.pichangol.Server
+import com.example.joel.pichangol.models.Profile
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                     start()
                 }
 
-                toggleConfiguration(-80f)
+                toggleConfiguration(-130f)
 
                 isConfiguration = false
 
@@ -178,6 +179,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loginPostRequest(email : String, password : String){
+        //set loading gif to front
+        imgLoading.visibility = View.VISIBLE
+        imgLoading.bringToFront()
+
         requestQueue = Volley.newRequestQueue(this)
 
         val request = object : JsonObjectRequest(
@@ -186,31 +191,38 @@ class MainActivity : AppCompatActivity() {
             null,
             Response.Listener { response ->
 
-                if(response["response"] == "true"){
-                    val miIntent = Intent(this, PrincipalActivity::class.java)
-                    startActivity(miIntent)
-                } else if(response["response"] == "false"){
+                if(response["response"] == true){
+
+                    val profileObj = response.getJSONObject("profile")
+
+                    val id = profileObj["id"] as? Int ?: 0
+                    val account_id = profileObj.getJSONObject("account")["id"] as? Int ?: 0
+                    val full_name = profileObj["fullName"] as? String ?: ""
+                    val phone1 = profileObj["phone1"] as? String ?: ""
+                    val phone2 = profileObj["phone2"] as? String ?: ""
+                    val phone3 = profileObj["phone3"] as? String ?: ""
+                    val dni = profileObj["dni"] as? String ?: ""
+                    val status = profileObj["status"] as? Int ?: 0
+
+                    Server.instance.profile = Profile(id,account_id,full_name,phone1,phone2,phone3,dni,status)
+
+                    val principalActivity = Intent(this, PrincipalActivity::class.java)
+                    imgLoading.visibility = View.GONE
+                    startActivity(principalActivity)
+
+                } else {
+                    imgLoading.visibility = View.GONE
                     Toast.makeText(this,"Credenciales incorrectas.",Toast.LENGTH_SHORT).show()
-                } else{
-                    Toast.makeText(this,"No se reconoce el response.",Toast.LENGTH_SHORT).show()
                 }
 
             },
             Response.ErrorListener {
-                Toast.makeText(this,"Probablemente, el servicio es incorrecto. Error: $it",Toast.LENGTH_SHORT).show()
+                imgLoading.visibility = View.GONE
+                Toast.makeText(this,"Probablemente, el servicio es incorrecto. Error: $it",Toast.LENGTH_LONG).show()
             }
         ) {
             override fun getBodyContentType(): String {
                 return "application/json"
-            }
-
-            override fun getParams(): MutableMap<String, String> {
-                val params = HashMap<String,String>()
-
-                params.put("email",email)
-                params.put("password",password)
-
-                return params
             }
 
             override fun getBody(): ByteArray {
