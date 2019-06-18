@@ -60,6 +60,11 @@ class LocalActivity : AppCompatActivity() {
             var scheduleIntent = Intent(this, ScheduleActivity::class.java)
             startActivity(scheduleIntent)
         }
+
+        btnReview.setOnClickListener {
+            var reviewIntent = Intent(this, ReviewActivity::class.java)
+            startActivity(reviewIntent)
+        }
     }
 
     fun reviewGetRequest(local_id : Int){

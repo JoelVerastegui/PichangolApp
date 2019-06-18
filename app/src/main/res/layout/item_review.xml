@@ -17,8 +17,38 @@
             android:layout_height="wrap_content"
             android:id="@+id/lblUserName" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/lblUserImg"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:textStyle="bold"/>
+            android:layout_marginStart="8dp"
+            android:textStyle="bold" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/userStar1"/>
+    <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp" android:id="@+id/userStar1"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/star"
+            app:layout_constraintEnd_toStartOf="@+id/userStar2"/>
+    <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp" android:id="@+id/userStar2"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/star"
+            app:layout_constraintEnd_toStartOf="@+id/userStar3"/>
+    <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp" android:id="@+id/userStar3"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/star"
+            app:layout_constraintEnd_toStartOf="@+id/userStar4"/>
+    <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp" android:id="@+id/userStar4"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/star" app:layout_constraintEnd_toStartOf="@+id/userStar5"
+    />
+    <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp" android:id="@+id/userStar5" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/star"/>
     <TextView
             android:text="Lorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum DolorLorem Ipsum Dolor"
             android:layout_width="0dp"

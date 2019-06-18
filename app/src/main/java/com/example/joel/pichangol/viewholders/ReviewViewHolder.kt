@@ -23,5 +23,23 @@ class ReviewViewHolder(view : View) : RecyclerView.ViewHolder (view) {
             4 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_4)
             5 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_5)
         }
+
+
+
+        if(review.stars >= 1){
+            itemView.userStar1.setBackgroundResource(R.drawable.star_b)
+        }
+        if(review.stars >= 2){
+            itemView.userStar2.setBackgroundResource(R.drawable.star_b)
+        }
+        if(review.stars >= 3){
+            itemView.userStar3.setBackgroundResource(R.drawable.star_b)
+        }
+        if(review.stars >= 4){
+            itemView.userStar4.setBackgroundResource(R.drawable.star_b)
+        }
+        if(review.stars >= 5){
+            itemView.userStar5.setBackgroundResource(R.drawable.star_b)
+        }
     }
 }
