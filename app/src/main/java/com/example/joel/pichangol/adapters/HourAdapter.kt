@@ -10,7 +10,7 @@ import com.example.joel.pichangol.viewholders.HourViewHolder
 class HourAdapter (var hours : List<Hour>) : RecyclerView.Adapter<HourViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hour, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hours, parent, false)
         return HourViewHolder(view)
     }
 
