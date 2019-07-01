@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.transition.Explode
 import android.transition.Fade
 import android.transition.Slide
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
@@ -25,6 +26,8 @@ import com.example.joel.pichangol.Server
 import com.example.joel.pichangol.models.Profile
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +45,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var text = Date()
+        //var date = SimpleDateFormat("EEEE, dd 'de' MMMM, yyyy", Locale("es","ES")).format(text)
+        var date = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(System.currentTimeMillis())
+        Log.d("test","Fecha: ${date}")
+/*
+        var calendar = Calendar.getInstance()
+        calendar.time = date
+        Log.d("test","Day of the week: ${calendar.get(Calendar.DAY_OF_MONTH)}")
+
+
+        var actual = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
+
+        var date2 = SimpleDateFormat("yyyy-MM-dd").parse(actual)
+
+        Log.d("test","Fecha actual UTC: ${date2.time}")
+*/
+/*
+        text = "2019-06-24"
+        date = SimpleDateFormat("yyyy-MM-dd").parse(text)
+        //Log.d("test","Fecha ahora UTC: ${SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())}")
+
+        var actual = SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis())
+
+        date = SimpleDateFormat("yyyy-MM-dd").parse(actual)
+
+        Log.d("test","Date: ${date.time}")
+        Log.d("test","Actual: ${System.currentTimeMillis()}")
+
+        date = SimpleDateFormat("yyyy-MM-dd").parse("2019-06-29")
+        var calendar = Calendar.getInstance()
+        calendar.time = date
+        Log.d("test","Day of the week: ${calendar.get(Calendar.DAY_OF_WEEK)}")
+*/
         // Init sharedPreferences
         store = this.getSharedPreferences("store", Context.MODE_PRIVATE)
 
@@ -116,6 +152,13 @@ class MainActivity : AppCompatActivity() {
 
             val signInIntent = Intent(this, SignInActivity::class.java)
             startActivity(signInIntent)
+        }
+
+        lblGuest.setOnClickListener {
+            saveServerIP()
+
+            val principalActivity = Intent(this, PrincipalActivity::class.java)
+            startActivity(principalActivity)
         }
 
     }
@@ -193,18 +236,17 @@ class MainActivity : AppCompatActivity() {
 
                 if(response["response"] == true){
 
-                    val profileObj = response.getJSONObject("profile")
+                    val profileObj = response.getJSONObject("Customer")
 
                     val id = profileObj["id"] as? Int ?: 0
                     val account_id = profileObj.getJSONObject("account")["id"] as? Int ?: 0
-                    val full_name = profileObj["fullName"] as? String ?: ""
-                    val phone1 = profileObj["phone1"] as? String ?: ""
-                    val phone2 = profileObj["phone2"] as? String ?: ""
-                    val phone3 = profileObj["phone3"] as? String ?: ""
-                    val dni = profileObj["dni"] as? String ?: ""
-                    val status = profileObj["status"] as? Int ?: 0
+                    val firstName = profileObj["firstName"] as? String ?: ""
+                    val lastName = profileObj["lastName"] as? String ?: ""
+                    val birthday = profileObj["birthday"] as? String ?: ""
+                    val phone = profileObj["phone"] as? String ?: ""
+                    val email = profileObj["email"] as? String ?: ""
 
-                    Server.instance.profile = Profile(id,account_id,full_name,phone1,phone2,phone3,dni,status)
+                    Server.instance.profile = Profile(id,account_id,firstName,lastName,birthday,phone,email)
 
                     val principalActivity = Intent(this, PrincipalActivity::class.java)
                     imgLoading.visibility = View.GONE
@@ -228,8 +270,8 @@ class MainActivity : AppCompatActivity() {
             override fun getBody(): ByteArray {
                 val params = HashMap<String,String>()
 
-                params.put("email",email)
-                params.put("password",password)
+                params.put("login",email)
+                params.put("pass",password)
 
                 return JSONObject(params).toString().toByteArray()
             }

@@ -1,3 +1,4 @@
+/*
 package com.example.joel.pichangol.activities
 
 import android.content.Intent
@@ -165,3 +166,4 @@ class SignInAdditionalActivity : AppCompatActivity() {
         requestQueue?.add(request)
     }
 }
+*/

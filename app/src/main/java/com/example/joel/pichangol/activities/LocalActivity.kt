@@ -1,4 +1,4 @@
-package com.example.joel.pichangol.activities
+/*package com.example.joel.pichangol.activities
 
 import android.content.Context
 import android.content.Intent
@@ -156,3 +156,4 @@ class LocalActivity : AppCompatActivity() {
         requestQueue?.add(request)
     }
 }
+*/

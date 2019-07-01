@@ -1,5 +1,7 @@
+
 package com.example.joel.pichangol.activities
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +17,7 @@ import com.example.joel.pichangol.R
 import com.example.joel.pichangol.Server
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import org.json.JSONObject
+import java.util.*
 
 class SignInActivity : AppCompatActivity() {
 
@@ -34,6 +37,27 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
+        btnDate.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+
+            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+                var month = "0$monthOfYear"
+
+                var monthText = month.substring(month.length-2)
+
+                // Display Selected date in textbox
+                lblDate.setText("$dayOfMonth/$monthText/$year")
+            }, year, month, day)
+
+            dpd.show()
+        }
+
+        /*
         btnNext.setOnClickListener {
 
             full_name = txtFullName.text.toString()
@@ -46,9 +70,9 @@ class SignInActivity : AppCompatActivity() {
             }
 
         }
-
+*/
     }
-
+/*
     fun verifyFields() : Boolean{
         if(full_name.length >= 1 && full_name.length <= 70){
             if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.length >= 1 && email.length <= 70){
@@ -76,8 +100,8 @@ class SignInActivity : AppCompatActivity() {
             return false
         }
     }
-
-
+*/
+/*
     fun verifyEmailPostRequest(email:String){
         //set loading gif to front
         imgLoading.visibility = View.VISIBLE
@@ -130,4 +154,5 @@ class SignInActivity : AppCompatActivity() {
 
         requestQueue?.add(request)
     }
+    */
 }

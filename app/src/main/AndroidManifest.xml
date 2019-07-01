@@ -12,35 +12,44 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme.SinBarra">
-        <activity android:name=".activities.HourActivity">
-        </activity>
-        <activity android:name=".activities.SoccerFieldActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".activities.ReviewActivity">
-        </activity>
-        <activity android:name=".activities.SignInAdditionalActivity">
-        </activity>
-        <activity android:name=".activities.SignInActivity">
-        </activity>
-        <activity android:name=".activities.ScheduleActivity">
-        </activity>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyDXx0O_qwCujPvwRQcwQAsikPg81QwUvlQ"/>
 
         <activity android:name=".activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".activities.PrincipalActivity">
         </activity>
-        <activity
+        <!--<activity
                 android:name=".activities.LocalActivity"
                 android:windowSoftInputMode="adjustPan">
+        </activity>-->
+        <activity android:name=".activities.ReservationActivity">
+        </activity>
+        <activity android:name=".activities.LocalSActivity">
+        </activity>
+        <activity android:name=".activities.PurchaseActivity">
+        </activity>
+        <activity android:name=".activities.NotLoggedActivity">
+        </activity>
+        <activity android:name=".activities.HourActivity">
+        </activity>
+        <activity android:name=".activities.SoccerFieldActivity">
+        </activity>
+        <activity android:name=".activities.ReviewActivity">
+        </activity>
+        <!--<activity android:name=".activities.SignInAdditionalActivity">
+        </activity>-->
+        <activity android:name=".activities.SignInActivity">
+        </activity>
+        <activity android:name=".activities.ScheduleActivity">
         </activity>
     </application>
 

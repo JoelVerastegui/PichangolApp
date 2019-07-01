@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.joel.pichangol.R
+import com.example.joel.pichangol.activities.SoccerFieldActivity
 import com.example.joel.pichangol.models.Date
 import com.example.joel.pichangol.viewholders.DateViewHolder
+import kotlinx.android.synthetic.main.activity_soccer_field.*
 import kotlinx.android.synthetic.main.activity_soccer_field.view.*
 import kotlinx.android.synthetic.main.item_day.view.*
 
-class DateAdapter (var dates : List<Date>) : RecyclerView.Adapter<DateViewHolder>() {
+class DateAdapter (var dates : List<Date>, var soccerFieldActivity: SoccerFieldActivity) : RecyclerView.Adapter<DateViewHolder>() {
 
     var rowPosition = 0
 
@@ -35,6 +37,9 @@ class DateAdapter (var dates : List<Date>) : RecyclerView.Adapter<DateViewHolder
             rowPosition = position
 
             Log.d("TEST","$rowPosition")
+
+            soccerFieldActivity.imgLoading2.visibility = View.VISIBLE
+            soccerFieldActivity.soccerFieldGetRequest(soccerFieldActivity.displayedDates[rowPosition])
 
             // Refresh RecyclerView
             notifyDataSetChanged()

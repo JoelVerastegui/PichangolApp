@@ -8,6 +8,19 @@
         tools:context=".activities.ReviewActivity">
 
     <TextView
+        android:id="@+id/btnPublish"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#FF8800"
+        android:gravity="center"
+        android:text="PUBLICAR"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:id="@+id/btnReview" app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +31,7 @@
     <TextView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/lblBack2"
+            android:id="@+id/lblBack"
             android:background="@drawable/back_arrow" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/btnReview"/>
@@ -72,4 +85,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="50dp"
             app:layout_constraintTop_toBottomOf="@+id/star3"/>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imgLoading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        android:src="@drawable/loading_icon"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

@@ -17,12 +17,12 @@ class ScheduleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
-
+/*
         rvHours.layoutManager = LinearLayoutManager(this)
 
         loadHours()
 
-        rvHours.adapter = HourAdapter(hourList)
+        rvHours.adapter = HourAdapter(hourList)*/
     }
 
     fun loadHours(){

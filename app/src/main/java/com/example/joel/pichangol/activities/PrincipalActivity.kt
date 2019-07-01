@@ -64,16 +64,28 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
         imgLoading.visibility = View.VISIBLE
         imgLoading.bringToFront()
 
-        lblViewLocal.setOnClickListener {
-            val localName = lblName.text
-            val localAddress = lblAddress.text
+        if(Server.instance.profile != null){
+            lblUserFilter.visibility = View.VISIBLE
+            lblUser.visibility = View.VISIBLE
+        }
 
-            var localIntent = Intent(this, LocalActivity::class.java)
-            localIntent.putExtra("localId", selectedLocal?.id)
-            localIntent.putExtra("localName", selectedLocal?.name)
+        lblUser.setOnClickListener {
+            var reservationActivity = Intent(this, ReservationActivity::class.java)
+            startActivity(reservationActivity)
+        }
+
+
+        lblViewLocal.setOnClickListener {
+            /*
+            val localName = lblName.text
+            val localAddress = lblAddress.text*/
+
+            var localSIntent = Intent(this, LocalSActivity::class.java)
+            localSIntent.putExtra("localId", selectedLocal?.id)
+            /*localIntent.putExtra("localName", selectedLocal?.name)
             localIntent.putExtra("localAddress", selectedLocal?.address)
-            localIntent.putExtra("localDescription", selectedLocal?.description)
-            startActivity(localIntent)
+            localIntent.putExtra("localDescription", selectedLocal?.description)*/
+            startActivity(localSIntent)
         }
 
 
@@ -247,14 +259,14 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
                     val localJson = response.getJSONObject(i)
 
                     locals.add(Local(
-                        localJson["id"] as? Int ?: 0,
-                   localJson.getJSONObject("admin")["id"] as? Int ?: 0,
+                        localJson["id"] as? Int ?: 0,0,
+                   //localJson.getJSONObject("admin")["id"] as? Int ?: 0,
                         localJson["name"] as? String ?: "",
                         localJson["address"] as? String ?: "",
                         localJson["description"] as? String ?: "",
                         localJson["latitude"] as? Double ?: 0.0,
-                        localJson["longitude"] as? Double ?: 0.0,
-                        localJson["status"] as? String ?: ""
+                        localJson["longitude"] as? Double ?: 0.0,"0"
+                        //localJson["status"] as? String ?: ""
                     ))
 
                 }
