@@ -151,6 +151,7 @@ class MainActivity : AppCompatActivity() {
             saveServerIP()
 
             val signInIntent = Intent(this, SignInActivity::class.java)
+            signInIntent.putExtra("map",true)
             startActivity(signInIntent)
         }
 

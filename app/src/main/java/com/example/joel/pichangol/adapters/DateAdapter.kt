@@ -6,13 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.joel.pichangol.R
 import com.example.joel.pichangol.activities.SoccerFieldActivity
 import com.example.joel.pichangol.models.Date
 import com.example.joel.pichangol.viewholders.DateViewHolder
 import kotlinx.android.synthetic.main.activity_soccer_field.*
-import kotlinx.android.synthetic.main.activity_soccer_field.view.*
 import kotlinx.android.synthetic.main.item_day.view.*
 
 class DateAdapter (var dates : List<Date>, var soccerFieldActivity: SoccerFieldActivity) : RecyclerView.Adapter<DateViewHolder>() {
@@ -47,11 +45,11 @@ class DateAdapter (var dates : List<Date>, var soccerFieldActivity: SoccerFieldA
 
         if(rowPosition == position){
             itemView.lblDay.setTextColor(Color.parseColor("#FFFF8800"))
-            itemView.lblDate.setTextColor(Color.parseColor("#FFFF8800"))
+            itemView.txtBirthDate.setTextColor(Color.parseColor("#FFFF8800"))
             itemView.lblLine.visibility = View.VISIBLE
         } else{
             itemView.lblDay.setTextColor(Color.parseColor("#FF747474"))
-            itemView.lblDate.setTextColor(Color.parseColor("#FF747474"))
+            itemView.txtBirthDate.setTextColor(Color.parseColor("#FF747474"))
             itemView.lblLine.visibility = View.GONE
         }
     }

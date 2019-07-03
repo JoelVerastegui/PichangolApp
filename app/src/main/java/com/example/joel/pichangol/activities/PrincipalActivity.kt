@@ -191,6 +191,8 @@ class PrincipalActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnM
 
         selectedLocal = locals.find { l -> l.id == p0?.tag }
 
+        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(selectedLocal!!.latitude, selectedLocal!!.longitude), 15f))
+
         // Setting data
         lblName.text = selectedLocal?.name
         lblAddress.text = selectedLocal?.address

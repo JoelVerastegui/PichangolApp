@@ -8,6 +8,6 @@ import kotlinx.android.synthetic.main.item_day.view.*
 class DateViewHolder(view : View) : RecyclerView.ViewHolder (view) {
     fun loadDate(date : Date){
         itemView.lblDay.text = date.day
-        itemView.lblDate.text = date.date
+        itemView.txtBirthDate.text = date.date
     }
 }

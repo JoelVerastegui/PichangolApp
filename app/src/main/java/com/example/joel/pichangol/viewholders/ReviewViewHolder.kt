@@ -21,6 +21,11 @@ class ReviewViewHolder(view : View) : RecyclerView.ViewHolder (view) {
             3 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_3)
             4 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_4)
             5 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_5)
+            6 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_6)
+            7 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_7)
+            8 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_8)
+            9 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_9)
+            10 -> itemView.lblUserImg.setBackgroundResource(R.drawable.user_10)
         }
 
         val stars = review.stars.toInt()

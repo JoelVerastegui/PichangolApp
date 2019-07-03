@@ -11,7 +11,7 @@ class ReservationViewHolder(view : View) : RecyclerView.ViewHolder (view) {
 
         itemView.lblLocal.text = reservation.local
         itemView.lblSoccerField.text = reservation.soccerField
-        itemView.lblDate.text = reservation.date
+        itemView.txtBirthDate.text = reservation.date
         itemView.lblTotal.text = "S/. ${reservation.total}"
 
         val startText = "0${reservation.start}"

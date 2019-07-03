@@ -11,6 +11,7 @@ import com.example.joel.pichangol.Server
 import com.example.joel.pichangol.activities.HourActivity
 import com.example.joel.pichangol.models.Field
 import com.example.joel.pichangol.viewholders.FieldViewHolder
+import kotlinx.android.synthetic.main.item_fields.view.*
 
 class FieldAdapter (var fields : List<Field>) : RecyclerView.Adapter<FieldViewHolder> () {
 
@@ -38,7 +39,7 @@ class FieldAdapter (var fields : List<Field>) : RecyclerView.Adapter<FieldViewHo
             recycledViewPool = viewPool
         }
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.lblItemView.setOnClickListener {
             val context = it.context
             var hourActivity = Intent(context, HourActivity::class.java)
             hourActivity.putExtra("soccerFieldId",Server.instance.localS!!.soccerFields[position].id)

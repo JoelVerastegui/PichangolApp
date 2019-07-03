@@ -33,6 +33,12 @@ class NotLoggedActivity : AppCompatActivity() {
             startActivity(purchaseActivity)
         }
 
+        lblSignIn.setOnClickListener {
+            val signInIntent = Intent(this, SignInActivity::class.java)
+            signInIntent.putExtra("map",false)
+            startActivity(signInIntent)
+        }
+
         btnLogin.setOnClickListener {
 
             val email = txtEmail.text.toString()
